@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "expo-client",
-    "slug": "expo-client",
+    "name": "Viewsitting",
+    "slug": "Viewsitting",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
