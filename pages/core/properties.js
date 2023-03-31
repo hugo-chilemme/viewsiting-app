@@ -17,6 +17,15 @@ export const ButtonProperties = {
         fontSize: 16,
         textAlign: 'center',
     },
+    buttonTextDisabled: {
+        color: '#909090',
+        width: '100%',
+        backgroundColor: '#F9F9F9',
+        padding: 15,
+        borderRadius: 5,
+        fontSize: 16,
+        textAlign: 'center',
+    },
 }
 
 export const InputProperties = {
