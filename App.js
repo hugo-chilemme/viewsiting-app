@@ -1,6 +1,6 @@
 import WelcomePage from './pages/Welcome.js';
-import LoginPage from './pages/Login';
-
+import UserHaveAccountPage from './pages/UserHaveAccount';
+import RegisterPage from './pages/Register';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -12,7 +12,8 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator gestureEnabled="true">
         <Stack.Screen name="Welcome" options={{ headerShown: false }} component={WelcomePage} />
-        <Stack.Screen name="Login" options={{title:"Saisissez votre adresse email"}} component={LoginPage} />
+        <Stack.Screen name="UserHaveAccount" options={{title:"Saisissez votre adresse email"}} component={UserHaveAccountPage} />
+        <Stack.Screen name="Register" options={{title:"Création de compte"}} component={RegisterPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

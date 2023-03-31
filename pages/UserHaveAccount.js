@@ -4,6 +4,9 @@ import { Title, Button } from '../default.styles';
 import { InputProperties, TitleProperties, ButtonProperties } from './core/properties.js';
 import React, { useState, useRef } from 'react';
 
+
+let inputEmailValue;
+
 export default function WelcomePage({navigation}) {
   const container = StyleSheet.create({
     flex: 1,
@@ -20,8 +23,7 @@ export default function WelcomePage({navigation}) {
     return re.test(email);
   };
   
-  let inputEmailValid = false;
-  let inputEmailValue;
+
 
   const inputEmail = useRef(null);
   const submitButton = useRef(null);
@@ -36,7 +38,7 @@ export default function WelcomePage({navigation}) {
 
   const handleEmailChange = (text) => {
     const valid = validateEmail(text);
-    inputEmailValue = text;
+    inputEmailValue = text.slice(0);
     setIsValid(valid);
   };
   
@@ -47,23 +49,24 @@ export default function WelcomePage({navigation}) {
   const handleSubmit = async () => {
     if(!isValid) return;
     try {
-      const response = await fetch('https://example.com/api/data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ data: 'example data' }),
-      });
-      console.log(response);
+      // const response = await fetch('https://example.com/api/data', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify({ data: 'example data' }),
+      // });
+      const response = {ok: true, message: {UserHaveAccount: false}};
       // const data = await response.json();
-      // Traiter la réponse du serveur ici
-      // navigation.navigate('NextScreen');
+      if(!response.message.UserHaveAccount && inputEmailValue)
+        navigation.navigate('Register', {email: inputEmailValue});
+
     } catch (error) {
       console.error(error)
     }
     //  navigation.navigate('NextScreen'); 
   }
-
+  
   return (
     <View style={container}>
       <View style={{width: "100%"}}>
@@ -73,8 +76,8 @@ export default function WelcomePage({navigation}) {
         <TouchableOpacity style={InputProperties.element} onPress={handlePress}>
           <Text style={InputProperties.label}>Adresse Email</Text>
           <TextInput ref={inputEmail} inputMode="email"
-            style={InputProperties.input}
-            onChangeText={handleEmailChange}
+            style={InputProperties.input} 
+            onChangeText={handleEmailChange} 
           />
         </TouchableOpacity>
 
