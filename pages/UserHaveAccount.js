@@ -5,7 +5,7 @@ import { InputProperties, TitleProperties, ButtonProperties } from './core/prope
 import React, { useState, useRef } from 'react';
 
 
-let inputEmailValue;
+let inputTelephoneValue;
 
 export default function WelcomePage({navigation}) {
   const container = StyleSheet.create({
@@ -17,11 +17,6 @@ export default function WelcomePage({navigation}) {
   });
 
   
-
-  const validateEmail = (email) => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-  };
   
 
 
@@ -36,10 +31,27 @@ export default function WelcomePage({navigation}) {
     }
   };
 
-  const handleEmailChange = (text) => {
-    const valid = validateEmail(text);
-    inputEmailValue = text.slice(0);
-    setIsValid(valid);
+  function isValidPhoneNumber(phoneNumber) {
+    phoneNumber = phoneNumber.replace(/\s|-|\(|\)/g, '');
+    if (!/^\d+$/.test(phoneNumber)) {
+      return false;
+    }
+    if (phoneNumber[0] == '0' && phoneNumber.length !== 10)
+      return false;
+
+    if (phoneNumber[0] != '0' && phoneNumber.length !== 9)
+      return false; 
+
+    return true;
+  }
+  
+
+  
+
+  const handleTelephoneChange = (text) => {
+    const isValid = isValidPhoneNumber(text)
+    inputTelephoneValue = text.slice(0);
+    setIsValid(isValid);
   };
   
   
@@ -47,37 +59,35 @@ export default function WelcomePage({navigation}) {
     return isValid ? ButtonProperties.buttonText : ButtonProperties.buttonTextDisabled;
   };
   const handleSubmit = async () => {
-    if(!isValid) return;
-    try {
-      // const response = await fetch('https://example.com/api/data', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify({ data: 'example data' }),
-      // });
-      const response = {ok: true, message: {UserHaveAccount: false}};
-      // const data = await response.json();
-      if(!response.message.UserHaveAccount && inputEmailValue)
-        navigation.navigate('Register', {email: inputEmailValue});
-
-    } catch (error) {
-      console.error(error)
+    if(!isValid || !inputTelephoneValue) return;
+    inputTelephoneValue = inputTelephoneValue.length == 10 ? inputTelephoneValue.slice(1) : inputTelephoneValue
+    const datas = {
+      telephone: inputTelephoneValue, 
+      auds: deviceId,
+      audsName: deviceName
     }
-    //  navigation.navigate('NextScreen'); 
+    apicall('/accounts/user_have_account', (resp) => {
+      console.log(resp);
+      if (!resp.ok)
+        return;
+
+      const authorize_token = resp.message.authorize_token;
+      navigation.navigate(resp.message.UserHaveAccount ? "Login" : "Register", {telephone: inputTelephoneValue, authorize_token})
+
+    }, datas)
   }
   
   return (
     <View style={container}>
       <View style={{width: "100%"}}>
-        <Title size="0" title="Saisissez votre adresse email" properties={{ marginBottom: 20 }}></Title>
-        <Title size="4" title="Nous allons vous rediriger sur l'espace approprié"></Title>
+        <Title size="1" title="Saisissez votre numéro de téléphone" properties={{ marginBottom: 20 }}></Title>
+        <Title size="5" title="Nous allons vous rediriger sur l'espace approprié"></Title>
 
         <TouchableOpacity style={InputProperties.element} onPress={handlePress}>
-          <Text style={InputProperties.label}>Adresse Email</Text>
-          <TextInput ref={inputEmail} inputMode="email"
-            style={InputProperties.input} 
-            onChangeText={handleEmailChange} 
+          <Text style={InputProperties.label}>Téléphone</Text>
+          <TextInput ref={inputEmail} inputMode="tel" autoFocus={true}
+            style={InputProperties.input} maxLength={10}
+            onChangeText={handleTelephoneChange} 
           />
         </TouchableOpacity>
 
