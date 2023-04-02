@@ -1,6 +1,6 @@
 
 import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native';
-import { InputProperties, TitleProperties, ButtonProperties } from './pages/core/properties.js';
+import { InputProperties, TitleProperties, ButtonProperties } from './properties.js';
 import React, { useRef } from 'react';
 
 

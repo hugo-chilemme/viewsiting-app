@@ -1,22 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Alert, TextInput, TouchableOpacity, Text} from 'react-native';
-import { Title, Button } from '../../../default.styles';
-import { InputProperties, TitleProperties, ButtonProperties } from '../../core/properties.js';
+import { Title } from '../../core/styles';
+import { InputProperties, ButtonProperties } from '../../core/properties.js';
 import React, { useState, useRef } from 'react';
 
 
 let datas = {}
-
-function formatPhoneNumber(phoneNumber) {
-  phoneNumber = phoneNumber.replace(/\s|-|\(|\)/g, '');
-  if (!/^\d+$/.test(phoneNumber))
-    return false;
-  if (phoneNumber.length !== 9 && phoneNumber.length !== 10)
-    return false;
-  if (phoneNumber.length === 9)
-    phoneNumber = '0' + phoneNumber;
-  return phoneNumber;
-}
 
 
 export default function RegisterPage({route, navigation}) {

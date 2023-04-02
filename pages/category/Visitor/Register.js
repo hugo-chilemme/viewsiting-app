@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Alert, TextInput, TouchableOpacity, Text} from 'react-native';
-import { Title, Button } from '../../../default.styles';
-import { InputProperties, TitleProperties, ButtonProperties } from '../../core/properties.js';
+import { Title  } from '../../core/styles';
+import { InputProperties, ButtonProperties } from '../../core/properties.js';
 import React, { useState, useRef } from 'react';
 
 

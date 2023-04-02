@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity, PreviewLayout, ImageBackground } from 'react-native';
-import { Title, Input, Button } from '../../../default.styles';
-import React, { useState, useRef } from 'react';
-import Clipboard from '@react-native-clipboard/clipboard';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Title} from '../../core/styles';
+import React from 'react';
 
 export default function WelcomePage({navigation}) {
   const container = StyleSheet.create({

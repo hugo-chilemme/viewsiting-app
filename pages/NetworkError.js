@@ -1,8 +1,8 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 import { ButtonProperties } from './core/properties.js';
-import { Title,} from '../default.styles.js';
-import React, { useState, useEffect  } from 'react';
+import { Title,} from './core/styles.js';
+import React from 'react';
 
 export default function NetworkErrorPage({navigation, route}) {
   const container = StyleSheet.create({

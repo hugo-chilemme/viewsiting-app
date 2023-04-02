@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { Title, Input, Button } from '../../../default.styles';
-import React, { useState, useEffect  } from 'react';
-import { ButtonProperties } from '../../core/properties.js';
+import { StyleSheet, View, Image } from 'react-native';
+import { Title, Button } from '../../core/styles';
+import React from 'react';
 
 
 
