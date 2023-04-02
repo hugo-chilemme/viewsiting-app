@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Alert, TextInput, TouchableOpacity, Text} from 'react-native';
-import { Title, Button } from '../default.styles';
-import { InputProperties, TitleProperties, ButtonProperties } from './core/properties.js';
+import { Title, Button } from '../../../default.styles';
+import { InputProperties, TitleProperties, ButtonProperties } from '../../core/properties.js';
 import React, { useState, useRef } from 'react';
 
 
@@ -63,16 +63,17 @@ export default function WelcomePage({navigation}) {
     inputTelephoneValue = inputTelephoneValue.length == 10 ? inputTelephoneValue.slice(1) : inputTelephoneValue
     const datas = {
       telephone: inputTelephoneValue, 
-      auds: deviceId,
-      audsName: deviceName
     }
     apicall('/accounts/user_have_account', (resp) => {
-      console.log(resp);
       if (!resp.ok)
+      {
+        if (resp.NetworkError)
+          navigation.navigate('NetworkError', {NetworkStatus: resp.NetworkStatus});
         return;
+      }
 
       const authorize_token = resp.message.authorize_token;
-      navigation.navigate(resp.message.UserHaveAccount ? "Login" : "Register", {telephone: inputTelephoneValue, authorize_token})
+      navigation.navigate(resp.message.UserHaveAccount ? "Login" : "Register", {telephone: inputTelephoneValue, authorize_token, accountId: resp.message.accountId})
 
     }, datas)
   }
@@ -85,7 +86,7 @@ export default function WelcomePage({navigation}) {
 
         <TouchableOpacity style={InputProperties.element} onPress={handlePress}>
           <Text style={InputProperties.label}>Téléphone</Text>
-          <TextInput ref={inputEmail} inputMode="tel" autoFocus={true}
+          <TextInput ref={inputEmail} inputMode="tel" autoComplete="tel-national"
             style={InputProperties.input} maxLength={10}
             onChangeText={handleTelephoneChange} 
           />

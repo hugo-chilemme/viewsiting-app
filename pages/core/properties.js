@@ -59,7 +59,7 @@ export const TitleProperties = [
     {fontSize: 26, fontWeight: 'bold'},
     {fontSize: 24, fontWeight: 'bold'},
     {fontSize: 22, fontWeight: 'bold'},
-    {fontSize: 20, fontWeight: 'bold'},
+    {fontSize: 20, lineHeight: 30, color: '#101010'},
     {fontSize: 18, lineHeight: 30, color: '#202020'},
     {fontSize: 16, lineHeight: 30, color: '#707070'},
     {fontSize: 14, lineHeight: 30, color: '#808080'},

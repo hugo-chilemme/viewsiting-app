@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Alert, TextInput, TouchableOpacity, Text} from 'react-native';
-import { Title, Button } from '../default.styles';
-import { InputProperties, TitleProperties, ButtonProperties } from './core/properties.js';
+import { Title, Button } from '../../../default.styles';
+import { InputProperties, TitleProperties, ButtonProperties } from '../../core/properties.js';
 import React, { useState, useRef } from 'react';
 
 
@@ -27,8 +27,9 @@ export default function RegisterPage({route, navigation}) {
     justifyContent: 'center',
     alignItems: 'center',
   });
-  datas.email = route.params.email;
-  datas.token = route.params.token;
+  datas.telephone = route.params.telephone;
+  datas.authorize_token = route.params.authorize_token;
+  datas.auds = deviceId;
 
   const submitButton = useRef(null);
   const [isValid, setIsValid] = useState(false);
@@ -48,15 +49,31 @@ export default function RegisterPage({route, navigation}) {
     return isValid ? ButtonProperties.buttonText : ButtonProperties.buttonTextDisabled;
   };
   const handleSubmit = async () => {
-      if(!isValid) return;
-      refreshApp()
+    if(!isValid) return;
+
+    if (datas.password < 8)
+      return Alert.alert('Le mot de passe est trop court');
+
+    apicall('/accounts/login', (resp) => {
+      if (!resp.ok)
+      {
+        if (resp.NetworkError)
+          navigation.navigate('NetworkError', resp.NetworkStatus);
+        return;
+      }
+
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'StartScreen' }],
+        });
+    }, datas)
+      
   }
   return (
     <View style={container}>
       <View style={{width: "100%"}}>
-        <Title size="1" title="Se connecter à" properties={{ marginBottom: 15 }}></Title>
-        <Title size="4" title={`${datas.email}`}></Title>
-        <Title size="7" title={datas.token}></Title>
+        <Title size="0" title="Se connecter à" properties={{ marginBottom: 15 }}></Title>
+        <Title size="3" title={`+33 ${datas.telephone}`}></Title>
 
         <TouchableOpacity style={InputProperties.element}>
           <Text style={InputProperties.label}>Mot de passe</Text>

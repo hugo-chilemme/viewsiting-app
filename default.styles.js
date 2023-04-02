@@ -6,7 +6,7 @@ import React, { useRef } from 'react';
 
 
 export const Title = ({ size, title = "", properties={} }) => (
-    <Text style={{...properties, ...TitleProperties[size]}}>{title}</Text>
+    <Text style={{...TitleProperties[size], ...properties}}>{title}</Text>
 )
 
 export const Input = ({ placeholder, properties = {}, autoComplete = "off", onchange = null}) => {
