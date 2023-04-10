@@ -5,11 +5,20 @@ import { TouchableOpacity, Text, Image } from 'react-native';
 
 const Component = {
 
-    Button: (title, onpress) => {
-        
-        function handlePress() {
 
-            if (onpress)
+    /**
+     * Button(title, onpress, statechange);
+     *  Overall Application Behavior
+     * 
+     *  @param {string} title - That will be displayed
+     *  @param {function} onpress - Perform when he presses
+     *  @param {bool} enabled - Whether or not it is clickable
+     */
+    Button: (title, onpress, enabled=true) => {
+        
+        const handlePress = () => {
+
+            if (enabled && onpress)
             {
 
                 onpress();
@@ -17,32 +26,58 @@ const Component = {
             }
 
         }
+        stateupdate = () => 
+            enabled ? 
+            ButtonProperties.buttonText : 
+            ButtonProperties.buttonTextDisabled;
 
         return (
             <TouchableOpacity style={ButtonProperties.button} onPress={handlePress}>
-                <Text style={ButtonProperties.buttonText}>{title}</Text>
+                <Text style={stateupdate()}>{title}</Text>
             </TouchableOpacity>
         );
     },
 
+
+    /**
+     * Title(title, size, styles);
+     *  Overall Application Behavior
+     * 
+     *  @param {string} title - That will be displayed
+     *  @param {int} size - Size from 0-7 (0 is the greatest)
+     *  @param {object} styles - Additional styling
+     */
     Title: (title, size, styles = {}) => {
 
-        // We apply the base style @TitleProperties and additional ones on a case-by-case basis
-        const properties = {
-            ...styles,
-            ...TitleProperties[size]
+        if (TitleProperties[size])
+        {
+
+            const properties = { ...TitleProperties[size], ...styles }
+
+            return (<Text style={properties}>{title}</Text>)
+
         }
 
-        return (<Text style={properties}>{title}</Text>)
+
     },
 
-    Image: (source, props) => {
+
+    /**
+     * Image(source, styles);
+     *  Overall Application Behavior
+     * 
+     *  @param {string} source - Image Source
+     *      Called with a required => required('icon.png')
+     *  @param {object} styles - Additional styling
+     */
+    Image: (source, styles) => {
         const properties = {
-            ...props
+            ...styles
         }
         return (<Image style={properties} source={source} />)
     }
 
+    
 }
 
 exports.Component = Component;

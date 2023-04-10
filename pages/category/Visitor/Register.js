@@ -3,7 +3,7 @@ import { StyleSheet, View, Alert, TextInput, TouchableOpacity, Text} from 'react
 import { Title  } from '../../core/styles';
 import { InputProperties, ButtonProperties } from '../../core/properties.js';
 import React, { useState, useRef } from 'react';
-
+import { Component } from '../../core/components'
 
 let datas = {}
 
@@ -20,7 +20,7 @@ export default function RegisterPage({route, navigation}) {
   datas.telephone = route.params.telephone;
   datas.authorize_token = route.params.authorize_token;
   datas.accountId = route.params.accountId;
-  datas.auds = deviceId;
+
   const submitButton = useRef(null);
   const [isValid, setIsValid] = useState(false);
 
@@ -45,9 +45,6 @@ export default function RegisterPage({route, navigation}) {
     SetFormValue('password', value);
   }
 
-  const isFromComplete = () => {
-    return isValid ? ButtonProperties.buttonText : ButtonProperties.buttonTextDisabled;
-  };
   const handleSubmit = async () => {
     if(!isValid) return;
 
@@ -85,11 +82,12 @@ export default function RegisterPage({route, navigation}) {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={ButtonProperties.buttonAbsolute} onPress={handleSubmit}>
-          <Text ref={submitButton} style={isFromComplete()}>Suivant</Text>
-        </TouchableOpacity>
+
+
       </View>
-      
+
+      {   Component.Button("Suivant", handleSubmit, isValid)   }
+
       <StatusBar style="auto" />
     </View>
   );

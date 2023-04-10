@@ -5,8 +5,10 @@ const Device = {
   id: uuidv5(Platform.constants.Manufacturer, '1b671a64-40d5-491e-99b0-da01ff1f3341'),
   name: `${Platform.constants.Manufacture} ${Platform.constants.Model}`,
 };
+
+
 /**
- * 
+ * api(route, cb, message);
  * Viewsiting API call function
  *   => Communications go here
  * 
@@ -59,8 +61,8 @@ async function api (route, cb, message) {
 }
 
 /**
- * Viewsiting API call function
- * @deprecated Use api
+ * apicall(route, cb, message);
+ * @deprecated Use api(route, cb, message) instead
  */
 const apicall = api;
 

@@ -4,6 +4,8 @@ import { Title } from '../../core/styles';
 import { InputProperties, ButtonProperties } from '../../core/properties.js';
 import React, { useState, useRef } from 'react';
 
+import { Component } from '../../core/components'
+
 
 let inputTelephoneValue;
 
@@ -21,7 +23,6 @@ export default function WelcomePage({navigation}) {
 
 
   const inputEmail = useRef(null);
-  const submitButton = useRef(null);
   const [isValid, setIsValid] = useState(false);
 
   
@@ -53,9 +54,6 @@ export default function WelcomePage({navigation}) {
   };
   
   
-  const isValidEmail = () => {
-    return isValid ? ButtonProperties.buttonText : ButtonProperties.buttonTextDisabled;
-  };
   const handleSubmit = async () => {
     if(!isValid || !inputTelephoneValue) return;
     inputTelephoneValue = inputTelephoneValue.length == 10 ? inputTelephoneValue.slice(1) : inputTelephoneValue
@@ -81,8 +79,10 @@ export default function WelcomePage({navigation}) {
   return (
     <View style={container}>
       <View style={{width: "100%"}}>
-        <Title size="1" title="Saisissez votre numéro de téléphone" properties={{ marginBottom: 20 }}></Title>
-        <Title size="5" title="Nous allons vous rediriger sur l'espace approprié"></Title>
+
+        {   Component.Title('Saisissez votre téléphone', 1, { marginBottom: 20 })   }
+        
+        {   Component.Title('Nous allons vous rediriger sur l\'espace approprié', 5)   }
 
         <TouchableOpacity style={InputProperties.element} onPress={handlePress}>
           <Text style={InputProperties.label}>Téléphone</Text>
@@ -93,9 +93,9 @@ export default function WelcomePage({navigation}) {
         </TouchableOpacity>
 
       </View>
-      <TouchableOpacity style={ButtonProperties.button} onPress={handleSubmit}>
-        <Text ref={submitButton} style={isValidEmail()}>Suivant</Text>
-      </TouchableOpacity>
+
+      {   Component.Button('Suivant', handleSubmit, isValid)   }
+
       <StatusBar style="auto" />
     </View>
   );

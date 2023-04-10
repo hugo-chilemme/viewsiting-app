@@ -23,7 +23,7 @@ export default function WelcomePage({navigation}) {
 
         {   Component.Title("Application N°1 dans l’immobilier", 5)   }
 
-        {   Component.Button("Suivant", () => navigation.navigate('UserHaveAccount'))   }
+        {   Component.Button("Suivant", () => navigation.navigate('UserHaveAccount'), true)   }
 
         <StatusBar style="auto" />
       </View>

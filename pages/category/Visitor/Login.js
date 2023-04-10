@@ -5,6 +5,8 @@ import { InputProperties, ButtonProperties } from '../../core/properties.js';
 import React, { useState, useRef } from 'react';
 import Account from '../../../backend/account.class';
 
+
+import { Component } from '../../core/components'
 let datas = {}
 
 
@@ -18,7 +20,6 @@ export default function RegisterPage({route, navigation}) {
   });
   datas.telephone = route.params.telephone;
   datas.authorize_token = route.params.authorize_token;
-  datas.auds = deviceId;
 
   const TextPassword = useRef(null);
   const submitButton = useRef(null);
@@ -35,9 +36,6 @@ export default function RegisterPage({route, navigation}) {
   const setPasswordValue = (value) => {
     SetFormValue('password', value);
   }
-  const isFromComplete = () => {
-    return isValid ? ButtonProperties.buttonText : ButtonProperties.buttonTextDisabled;
-  };
   const handleSubmit = async () => {
     if(!isValid) return;
 
@@ -68,8 +66,11 @@ export default function RegisterPage({route, navigation}) {
   return (
     <View style={container}>
       <View style={{width: "100%"}}>
-        <Title size="0" title="Se connecter à" properties={{ marginBottom: 15 }}></Title>
-        <Title size="3" title={`+33 ${datas.telephone}`}></Title>
+
+        {   Component.Title('Se connecter à', 0, {marginBottom: 15})    }
+
+        {   Component.Title(`+33 ${datas.telephone}`, 3)    }
+
 
         <TouchableOpacity style={InputProperties.element}>
           <Text style={InputProperties.label}>Mot de passe</Text>
@@ -80,10 +81,9 @@ export default function RegisterPage({route, navigation}) {
         </TouchableOpacity>
       
 
-        <TouchableOpacity style={ButtonProperties.buttonAbsolute} onPress={handleSubmit}>
-          <Text ref={submitButton} style={isFromComplete()}>Se connecter</Text>
-        </TouchableOpacity>
       </View>
+
+      {   Component.Button("Se connecter", handleSubmit, isValid)   }
       
       <StatusBar style="auto" />
     </View>

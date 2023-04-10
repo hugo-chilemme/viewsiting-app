@@ -4,7 +4,7 @@ import { Title } from '../../core/styles';
 import { InputProperties, ButtonProperties } from '../../core/properties.js';
 import React, { useState, useRef } from 'react';
 
-
+import { Component } from '../../core/components'
 let datas = {}
 
 
@@ -46,10 +46,6 @@ export default function RegisterIdentity({route, navigation}) {
     SetFormValue('nom', value);
   }
 
-  const isFromComplete = () => {
-    return isValid ? ButtonProperties.buttonText : ButtonProperties.buttonTextDisabled;
-  };
-
   const handleSubmit = async () => {
     if(!isValid) return;
     
@@ -83,29 +79,27 @@ export default function RegisterIdentity({route, navigation}) {
   return (
     <View style={container}>
       <View style={{width: "100%"}}>
-        <Title size="0" title="Parler un peu de vous" properties={{ marginBottom: 15 }}></Title>
-        <Title size="5" title="Merci de renseigner les champs situés ci-dessous."></Title>
 
-         <TouchableOpacity style={InputProperties.element}>
-          <Text style={InputProperties.label}>Nom</Text>
-          <TextInput inputMode="text" autoComplete="name-family"
-            onChangeText={setNomValue}
-            style={InputProperties.input}
-          />
+        {   Component.Title('Parler un peu de vous', 0, {marginBottom: 15})   }
+
+        {   Component.Title('Merci de renseigner les champs situés ci-dessous.', 5)    }
+
+        <TouchableOpacity style={InputProperties.element}>
+            <Text style={InputProperties.label}>Nom</Text>
+            <TextInput inputMode="text" autoComplete="name-family"
+              onChangeText={setNomValue}  style={InputProperties.input}/>
         </TouchableOpacity>
+
         <TouchableOpacity style={InputProperties.element}>
           <Text style={InputProperties.label}>Prénom</Text>
           <TextInput inputMode="text" autoComplete="name-given"
-            onChangeText={setPrenomValue}
-            style={InputProperties.input}
-          />
+            onChangeText={setPrenomValue} style={InputProperties.input} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={ButtonProperties.buttonAbsolute} onPress={handleSubmit}>
-          <Text ref={submitButton} style={isFromComplete()}>Suivant</Text>
-        </TouchableOpacity>
       </View>
-      
+
+      {   Component.Button('Suivant', handleSubmit, isValid)   }
+
       <StatusBar style="auto" />
     </View>
   );

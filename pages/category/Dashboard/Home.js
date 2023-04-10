@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity, ImageBackground } from 'react-nativ
 import { Title } from '../../core/styles';
 import React from 'react';
 import { Icon } from '@rneui/themed';
-
+import { Component } from '../../core/components'
 
 export default function WelcomePage({navigation}) {
 
@@ -84,28 +84,22 @@ export default function WelcomePage({navigation}) {
         </TouchableOpacity>
         <ImageBackground style={backgroundImage} source={{uri: "https://cdn.pixabay.com/photo/2016/11/21/12/59/couch-1845270_960_720.jpg"}}> 
           <View style={{padding:20}}>
-            <Title size="0" title={`Mon espace`} properties={{color:'#fff', marginBottom:10, fontSize: 32}}></Title>
             
+            {   Component.Title('Mon espace', 0, { color: '#fff' })   }
+          
           </View>
         </ImageBackground>
       </View>
       <View style={{padding: 20}}>
-      {/* <TouchableOpacity style={donotdisturb}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{width: 60}}>
-            <Icon name='moon' type='feather' color="#1A58A2" style={navbar.icon} />
-          </View>
-          <View>
-            <Title size="5" title={`Mode ne pas déranger`} properties={{fontWeight: "bold", color:"#000"}}></Title>
-            <Title size="6" title={`Les notifications sont désactivé`}></Title>
-          </View>
-        </View>
-      </TouchableOpacity> */}
-        <Title size="3" title={`Wish Home`} properties={{marginBottom: 15}}></Title>
+
+        {   Component.Title('Wish Home', 3, { marginBottom: 15 })   }
       
         <TouchableOpacity style={wishhome} onPress={() => navigation.navigate('CreateWishHome')}>
-          <Title size="5" title={`Compléter votre Wish Home`} properties={{fontWeight: "bold", color:"#000"}}></Title>
-          <Title size="6" title={`Créer votre maison ou appartement parfait(e)`}></Title>
+          
+          {   Component.Title('Compléter votre Wish Home', 5, { fontWeight: "bold", color: '#000'})   }
+          
+          {   Component.Title('Créer votre maison ou appartement parfait(e)', 6)   }
+        
         </TouchableOpacity>
       </View>
       <View style={navbar.view}>
