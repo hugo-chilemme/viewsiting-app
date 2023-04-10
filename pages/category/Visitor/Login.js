@@ -3,7 +3,7 @@ import { StyleSheet, View, Alert, TextInput, TouchableOpacity, Text} from 'react
 import { Title } from '../../core/styles';
 import { InputProperties, ButtonProperties } from '../../core/properties.js';
 import React, { useState, useRef } from 'react';
-
+import Account from '../../../backend/account.class';
 
 let datas = {}
 
@@ -20,6 +20,7 @@ export default function RegisterPage({route, navigation}) {
   datas.authorize_token = route.params.authorize_token;
   datas.auds = deviceId;
 
+  const TextPassword = useRef(null);
   const submitButton = useRef(null);
   const [isValid, setIsValid] = useState(false);
 
@@ -43,21 +44,27 @@ export default function RegisterPage({route, navigation}) {
     if (datas.password < 8)
       return Alert.alert('Le mot de passe est trop court');
 
+
+    setIsValid(false)
     apicall('/accounts/login', (resp) => {
       if (!resp.ok)
       {
         if (resp.NetworkError)
           navigation.navigate('NetworkError', resp.NetworkStatus);
+        setIsValid(true)
         return;
       }
 
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'StartScreen' }],
-        });
+      accounts.users[resp.authority.accountId] = new Account(resp.authority.accountId, resp.authority);
+      accounts.save();
+      Storage.set('@account', JSON.stringify({accountId: resp.authority.accountId}));
+      navigation.reset({ index: 0, routes: [{ name: 'StartScreen' }] });
+
     }, datas)
       
   }
+
+  
   return (
     <View style={container}>
       <View style={{width: "100%"}}>
@@ -66,7 +73,7 @@ export default function RegisterPage({route, navigation}) {
 
         <TouchableOpacity style={InputProperties.element}>
           <Text style={InputProperties.label}>Mot de passe</Text>
-          <TextInput inputMode="text" secureTextEntry={true} autoComplete="current-password"
+          <TextInput ref={TextPassword} inputMode="text" secureTextEntry={true} autoComplete="current-password"
             onChangeText={setPasswordValue}
             style={InputProperties.input}
           />

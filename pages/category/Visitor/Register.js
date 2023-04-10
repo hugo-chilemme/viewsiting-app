@@ -54,16 +54,18 @@ export default function RegisterPage({route, navigation}) {
     if (datas.password < 8)
       return Alert.alert('Le mot de passe est trop court');
 
-    navigation.navigate('RegisterIdentity')
+    setIsValid(false)
     apicall('/accounts/register', (resp) => {
       if (!resp.ok)
       {
         if (resp.NetworkError)
           navigation.navigate('NetworkError', resp.NetworkStatus);
+        setIsValid(true)
         return;
       }
-
-      
+      accounts.add(resp.authority);
+      accounts.active = accounts.users[resp.authority.accountId];
+      navigation.navigate('RegisterIdentity')
     }, datas)
     
       

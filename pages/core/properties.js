@@ -39,11 +39,27 @@ export const InputProperties = {
         marginTop: 45,
         padding: 15,
         borderRadius: 10,
-        backgroundColor: '#F9F9F9'
+        backgroundColor: '#eee'
     },
     label: {
         fontSize: 14,
         color: '#808080',
+    },
+    selector: {
+        display: "flex",
+        width: '100%',
+        flexDirection: "row",
+        marginTop:20,
+    },
+    selectorItem: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding:15,
+    },
+    selectorActive: {
+        backgroundColor: '#1A58A250',
+        borderRadius: 5
     },
     input: {
         borderWidth: 0,
@@ -65,3 +81,30 @@ export const TitleProperties = [
     {fontSize: 14, lineHeight: 30, color: '#808080'},
     {fontSize: 12, lineHeight: 30, color: '#909090'}
 ]
+
+
+let SelectorProperties = {
+    element: {
+        marginTop: 25,    
+    },
+    button: {
+        width: "100%",
+        color:'#000',
+        marginTop: 15,  
+        borderRadius: 10,
+        padding:20,
+        borderWidth: 2,
+        borderColor: "transparent",
+        backgroundColor: '#eee',
+    },
+   
+    buttonText: {
+        fontSize: 16,
+    }
+}
+SelectorProperties.buttonActive = {...SelectorProperties.button, ...{
+    borderColor: "#1A58A2",
+}}
+
+
+exports.SelectorProperties = SelectorProperties;

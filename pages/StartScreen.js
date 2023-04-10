@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Image } from 'react-native';
-
+import Account from '../backend/account.class';
 
 export default function WelcomePage({navigation}) {
   const container = StyleSheet.create({
@@ -10,58 +10,38 @@ export default function WelcomePage({navigation}) {
     alignItems: 'center',
     justifyContent: 'center',
   });
-  const testNetwork = async (cb) => {
-    try {
-      const response = await fetch('https://www.google.com/');
-      cb(response.ok)
-    } catch (error) {
-      console.error(error)
-      cb(false)
-    }
-  }
-  
-  let isConnected = false;
-  testNetwork((res) => {
-    isConnected = res;
-    if (!isConnected)
-    {
-      navigation.navigate('NetworkError')
-    }
-    else
-    {
-      Storage.get('@accounts', (res) => {
-        accounts = res ? res : {};
-          Storage.get('@account', (res) => {
-            account.accountId = res && Object.keys(res).length > 0 && accounts[res.accountId] ? res.accountId : undefined;
-            
-            if (account.accountId)
-            {
-                apicall('/accounts/me', (res) => {
-                  console.log(res)
-                    if (res.ok)
-                    {
-                        account.user = res.message;
-                        navigation.reset({
-                          index: 0,
-                          routes: [{ name: 'Dashboard' }],
-                        });
-                    }
-                    else
-                      navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'Visitor' }],
-                      });
-                });
-            }
-            else
-              navigation.reset({
-                index: 0,
-                routes: [{ name: 'Visitor' }],
-              });
-        })
-      })
-    }
-  });
+
+  Storage.get('@accounts', (accounts_list = []) => {
+      Storage.get('@account', async (active) => {
+        for (const account of accounts_list)
+        {
+          accounts.users[account.accountId] = new Account(account.accountId, account.authority);
+
+          if (active && active.accountId === account.accountId)
+          {
+            await accounts.users[account.accountId].connect();
+          }
+        }
+
+        const name = accounts.active ? "Dashboard" : "Visitor";
+
+        if (accounts.active)
+        {
+          console.info(accounts.active);
+          if (!accounts.active.user || !accounts.active.user.PRENOM || !accounts.active.user.NOM)
+          {
+            navigation.navigate('RegisterIdentity');
+            return;
+          }
+        }
+
+        navigation.reset({
+          index: 0,
+          routes: [{ name }],
+        });
+      });
+      
+  })
 
 
 
@@ -69,7 +49,7 @@ export default function WelcomePage({navigation}) {
         
   return (
     <View style={container}>
-      <Image style={{ marginBottom: 20, height:100, width:100 }} source={require('../assets/icon.png')} />
+      <Image style={{ width:150, height: 50}} source={require('../assets/icon.png')} />
       <StatusBar style="auto" />
     </View>
   );

@@ -59,12 +59,13 @@ export default function WelcomePage({navigation}) {
   return (
     <View style={container}>
       <View style={{padding:20}}> 
-        <Title size="3" title={`Notifications`} properties={{marginBottom:5, fontWeight: "bold"}}></Title>
+        <Title size="3" title={`Notifications`} properties={{marginBottom:15, fontWeight: "bold"}}></Title>
+        <Title size="6" title={`Votre centre de notification est vide`} properties={{marginBottom:5}}></Title>
       </View>
-      <TouchableOpacity style={notify}>
+      {/* <TouchableOpacity style={notify}>
         <Title size="5" title={`Mettez à jour votre compte`} properties={{fontWeight: "bold", color:"#000"}}></Title>
         <Title size="6" title={`Des informations sont manquantes`}></Title>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <View style={navbar.view}>
           

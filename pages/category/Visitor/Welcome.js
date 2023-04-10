@@ -18,7 +18,7 @@ export default function WelcomePage({navigation}) {
 
     return (
       <View style={container}>
-        <Image style={{ marginBottom: 20, height:100, width:100 }} source={require('../../../assets/icon.png')} />
+        <Image style={{ marginBottom: 50, width:150, height: 50}} source={require('../../../assets/icon.png')} />
         <Title size="1" title="L'immobilier dans votre poche" properties={{ marginBottom: 20 }}></Title>
         <Title size="5" title="Application N°1 dans l’immobilier"></Title>
         <Button title="Suivant" press="Saisissez votre adresse email" redirect={{...navigation, ...{page: "UserHaveAccount"}}}></Button>

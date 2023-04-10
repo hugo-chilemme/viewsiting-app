@@ -47,17 +47,26 @@ export default function WelcomePage({navigation}) {
   return (
     <View style={container}>
       <View style={{marginBottom: 50}}>
-        <Title size="2" title={`Préférence`} properties={{marginBottom: 10}}></Title>
+        <Title size="3" title={`Préférence d'application`} properties={{marginBottom: 10, fontWeight: "bold"}}></Title>
         <TouchableOpacity style={button}>
-          <Title size="5" title={`Gérer mon compte`} ></Title>
+          <Title size="5" title={`Gérer les notifications`}></Title>
         </TouchableOpacity>
       </View>
       <View style={{marginBottom: 50}}>
-        <Title size="2" title={`Gérer mon compte`} properties={{marginBottom: 10}}></Title>
+        <Title size="3" title={`Modifier mon compte`} properties={{marginBottom: 10, fontWeight: "bold"}}></Title>
         {/* <TouchableOpacity style={button}>
           <Title size="5" title={`Gérer mon compte`} ></Title>
         </TouchableOpacity> */}
-        <TouchableOpacity style={button} onPress={() => { accountActions.logout(navigation); }}>
+        <TouchableOpacity style={button}>
+          <Title size="5" title={`Modifier mon mot de passe`}></Title>
+        </TouchableOpacity>
+        <TouchableOpacity style={button}>
+          <Title size="5" title={`Changer de numéro de téléphone `} ></Title>
+        </TouchableOpacity>
+        <TouchableOpacity style={button} onPress={() => { 
+            accounts?.active.logout();
+            navigation.navigate('StartScreen');
+         }}>
           <Title size="5" title={`Se déconnecter`} properties={{color: 'red'}}></Title>
         </TouchableOpacity>
       </View>
@@ -65,8 +74,8 @@ export default function WelcomePage({navigation}) {
      
       
       <View>
-        <Title size="7" title={`${account.accountId}`} properties={{color:"#aaa"}}></Title>
-        <Title size="6" title={`Viewsiting (C) 2023 — V0.0.1-02042023`} properties={{color:"#707070", marginTop:0}}></Title>
+        <Title size="7" title={`${accounts?.active.accountId}`} properties={{color:"#aaa"}}></Title>
+        <Title size="6" title={`Viewsiting (C) ${new Date().getFullYear()} — V0.0.1-02042023`} properties={{color:"#707070", marginTop:0}}></Title>
       </View>
       <StatusBar style="light"/>
     </View>

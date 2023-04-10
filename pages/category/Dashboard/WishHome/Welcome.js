@@ -1,13 +1,12 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, TouchableOpacity, ImageBackground } from 'react-native';
-import { Title } from '../../core/styles';
+import { StyleSheet, View, TouchableOpacity, ImageBackground, Text } from 'react-native';
+import { Title } from '../../../core/styles';
+import { InputProperties, ButtonProperties } from '../../../core/properties.js';
 import React from 'react';
 import { Icon } from '@rneui/themed';
 
 
 export default function WelcomePage({navigation}) {
-
-
   const container = StyleSheet.create({
     flex: 1,
     height: '100%',
@@ -50,15 +49,7 @@ export default function WelcomePage({navigation}) {
     backgroundSize: 'cover',
 
   };
-  const settings = {
-    position: 'absolute',
-    top:0,
-    right:0,
-    margin:25,
-    marginRight: 5,
-    padding:25,
-    zIndex: 1
-  }
+
   const wishhome = {
     padding:15,
     paddingTop: 10,
@@ -67,26 +58,23 @@ export default function WelcomePage({navigation}) {
     borderRadius: 10,
   }
 
-  const donotdisturb = {
-    padding:10,
-    paddingTop: 10,
-    paddingBottom: 10,
-    backgroundColor: '#00000010',
-    borderRadius: 10,
-    marginBottom: 25,
+  const quit = {
+    position: 'absolute',
+    top:0,
+    left:0,
+    margin:25,
+    marginLeft: 5,
+    padding:25,
+    zIndex: 1
   }
-
   return (
     <View style={container}>
-      <View style={{height: "35%"}}>
-        <TouchableOpacity style={settings} onPress={() => navigation.navigate('Account', { animationEnabled: false })}>
-            <Icon name='settings' type='feather' size={22} color="#fff" style={navbar.icon} />
+      <TouchableOpacity style={quit} onPress={() => navigation.navigate('Home')}>
+            <Icon name='x' type='feather' size={22} color="#fff" style={navbar.icon} />
         </TouchableOpacity>
-        <ImageBackground style={backgroundImage} source={{uri: "https://cdn.pixabay.com/photo/2016/11/21/12/59/couch-1845270_960_720.jpg"}}> 
-          <View style={{padding:20}}>
-            <Title size="0" title={`Mon espace`} properties={{color:'#fff', marginBottom:10, fontSize: 32}}></Title>
-            
-          </View>
+      <View style={{height: "50%"}}>
+
+        <ImageBackground style={backgroundImage} source={{uri: "https://cdn.pixabay.com/photo/2015/07/27/17/14/mountains-862870_960_720.jpg"}}> 
         </ImageBackground>
       </View>
       <View style={{padding: 20}}>
@@ -101,26 +89,14 @@ export default function WelcomePage({navigation}) {
           </View>
         </View>
       </TouchableOpacity> */}
-        <Title size="3" title={`Wish Home`} properties={{marginBottom: 15}}></Title>
-      
-        <TouchableOpacity style={wishhome} onPress={() => navigation.navigate('CreateWishHome')}>
-          <Title size="5" title={`Compléter votre Wish Home`} properties={{fontWeight: "bold", color:"#000"}}></Title>
-          <Title size="6" title={`Créer votre maison ou appartement parfait(e)`}></Title>
-        </TouchableOpacity>
+        <Title size="0" properties={{marginTop: 25, textAlign: 'center'}} title={`Créer mon Wish Home`}></Title>
+        <Title size="5" properties={{marginTop: 25, textAlign: 'center'}} title="Concevez la maison de vos rêves en personnalisant les accessoires dans chaque pièce, en ajoutant des chambres, un salon, et bien plus encore."></Title>
+        <Title size="6" properties={{marginTop: 50, textAlign: 'center'}} title="Durée"></Title>
+        <Title size="4" properties={{marginTop: 0, textAlign: 'center'}} title="3 à 15 mns"></Title>
       </View>
-      <View style={navbar.view}>
-        
-          
-        <TouchableOpacity style={navbar.item}>
-          <Icon name='home' type='feather' color="#1A58A2" style={navbar.icon} />
+      <TouchableOpacity style={{...ButtonProperties.button, padding: 20, paddingBottom: 9}} onPress={() => navigation.navigate('WishHome_Deplacement')}>
+          <Text style={ButtonProperties.buttonText}>Commencer</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity style={navbar.item} onPress={() => navigation.navigate('Notification', { animationEnabled: false })}>
-          <Icon name='bell' type='feather' color="#808080" style={navbar.icon} />
-        </TouchableOpacity>
-
-
-      </View>
       <StatusBar style="light"/>
     </View>
   );

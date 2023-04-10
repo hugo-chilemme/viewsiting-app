@@ -1,6 +1,7 @@
+
 import StartScreenPage from './pages/StartScreen';
 import NetworkErrorPage from './pages/NetworkError';
-
+import Account from './backend/account.class';
 import WelcomePage from './pages/category/Visitor/Welcome';
   import UserHaveAccountPage from './pages/category/Visitor/UserHaveAccount';
 
@@ -13,6 +14,16 @@ import DashboardPage from './pages/category/Dashboard/Home';
   import AccountPage from './pages/category/Dashboard/Account';
   import NotificationPage from './pages/category/Dashboard/Notification';
 
+  import CreateWishHome from './pages/category/Dashboard/WishHome/Welcome';
+  import WishHome_Me from './pages/category/Dashboard/WishHome/Me';
+  import WishHome_Enfant from './pages/category/Dashboard/WishHome/Enfant';
+  import WishHome_Me_Identifier from './pages/category/Dashboard/WishHome/Me_Identifier';
+  import WishHome_Maried_Identifier from './pages/category/Dashboard/WishHome/Maried_Identifier';
+  import WishHome_Finance from './pages/category/Dashboard/WishHome/Finance';
+  import WishHome_Demarche_Banque from './pages/category/Dashboard/WishHome/Demarche_Banque';
+  import WishHome_Revenu from './pages/category/Dashboard/WishHome/Revenu';
+  import WishHome_Deplacement from './pages/category/Dashboard/WishHome/Deplacement';
+
 import Storage from './pages/core/Storage';
 global.Storage = Storage;
 
@@ -23,20 +34,8 @@ import { Platform } from 'react-native';
 
 
 const Stack = createStackNavigator();
-global.accounts = {};
-global.account = {};
 
-global.accountActions = {
-  logout: (navigation = null) => {
-    delete accounts[account.accountId];
-    account = {};
 
-    Storage.set('@accounts', JSON.stringify(accounts));
-    Storage.set('@account', JSON.stringify({}));
-    if(navigation)
-      navigation.reset({ index: 0, routes: [{ name: 'StartScreen' }], })
-  }
-}
 
 
 const device = Platform.Serial || `${Platform.constants.Manufacturer}-${Platform.constants.Model}`;
@@ -64,6 +63,18 @@ function App() {
         <Stack.Screen name="Home" options={{ headerShown: false, animationEnabled: false }} component={DashboardPage} />
         <Stack.Screen name="Account" options={{ animationEnabled: false }} animationEnabled={false}  component={AccountPage} />
         <Stack.Screen name="Notification" options={{ headerShown: false, animationEnabled: false }}  animationEnabled={false}  component={NotificationPage} />
+
+        <Stack.Screen name="CreateWishHome" options={{ headerShown: false}} animationEnabled={false}  component={CreateWishHome} />
+        <Stack.Screen name="WishHome_Me" options={{ headerShown: false, animationEnabled: false}} animationEnabled={false}  component={WishHome_Me} />
+        <Stack.Screen name="WishHome_Enfant" options={{ headerShown: false, animationEnabled: false}} animationEnabled={false}  component={WishHome_Enfant} />
+        <Stack.Screen name="WishHome_Me_Identifier" options={{ headerShown: false, animationEnabled: false}} animationEnabled={false}  component={WishHome_Me_Identifier} />
+        <Stack.Screen name="WishHome_Maried_Identifier" options={{ headerShown: false, animationEnabled: false}} animationEnabled={false}  component={WishHome_Maried_Identifier} />
+        <Stack.Screen name="WishHome_Finance" options={{ headerShown: false, animationEnabled: false}} animationEnabled={false}  component={WishHome_Finance} />
+        <Stack.Screen name="WishHome_Demarche_Banque" options={{ headerShown: false, animationEnabled: false}} animationEnabled={false}  component={WishHome_Demarche_Banque} />
+        <Stack.Screen name="WishHome_Revenu" options={{ headerShown: false, animationEnabled: false}} animationEnabled={false}  component={WishHome_Revenu} />
+        <Stack.Screen name="WishHome_Deplacement" options={{ headerShown: false, animationEnabled: false}} animationEnabled={false}  component={WishHome_Deplacement} />
+      
+        <Stack.Screen name="SetProfil" options={{title:"Création de compte", headerShown: false }} component={RegisterIdentityPage} />
       </Stack.Navigator>
     );
   }
@@ -74,6 +85,8 @@ function App() {
         <Stack.Screen name="NetworkError" options={{ headerShown: false }} component={NetworkErrorPage} />
         <Stack.Screen name="Visitor" options={{ headerShown: false }}  component={VisitorStack} />
         <Stack.Screen name="Dashboard" options={{ headerShown: false }}  component={DashboardStack} />
+        <Stack.Screen name="RegisterIdentity" options={{title:"Création de compte", headerShown: false }} component={RegisterIdentityPage} />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -83,7 +96,6 @@ function App() {
 }
 
 
-let token;
 let requestInProgress = false;
 global.apicall = async (event, cb, message = {}) => {
   if(requestInProgress) return;
@@ -94,18 +106,9 @@ global.apicall = async (event, cb, message = {}) => {
   datas.authority = {
     NAME: deviceName,
     ID: deviceId,
+    ...accounts?.active?.authorization(),
   }
-  if (account && account.accountId)
-  {
-    const authorization = accounts[account.accountId];
-   
-    let AuthorityData = {
-      ACCOUNT_ID: account.accountId,
-      ACCESS_TOKEN: authorization.access_token,
-      REFRESH_TOKEN: authorization.refresh_token,
-    }
-    datas.authority = Object.assign({...datas.authority, ...AuthorityData});
-  }
+  
   
   requestInProgress = true;
   const response = await fetch('https://alice.hugochilemme.com'+event, {
@@ -119,26 +122,11 @@ global.apicall = async (event, cb, message = {}) => {
   if (response.ok == false)
     return cb({ok: false, NetworkError: true, NetworkStatus: response.status});
 
-  // const response = {ok: true, message: {UserHaveAccount: true}};
-  response.json().then((resp) => {
-    console.log(resp);
-    if (resp.ok && resp.new_token)
-    {
-      token = resp.new_token;
-      console.log('Changed token', token);
-    }
-    if (resp.authority)
-    {
-      accounts[resp.authority.accountId] = resp.authority
-
-      account.accountId = resp.authority.accountId;
-
-      Storage.set('@accounts', JSON.stringify(accounts));
-      Storage.set('@account', JSON.stringify(account));
-      console.log('user added account', account);
-    }
-    
+  await response.json().then(async (resp) => {
+    if (resp.authority && accounts.active)
+      accounts.active.setAuthorization(resp.authority);
     cb(resp)
+    return resp;
   })
   
 }

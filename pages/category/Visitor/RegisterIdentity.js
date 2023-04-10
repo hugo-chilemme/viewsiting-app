@@ -9,7 +9,7 @@ let datas = {}
 
 
 
-export default function RegisterPage({route, navigation}) {
+export default function RegisterIdentity({route, navigation}) {
   const container = StyleSheet.create({
     flex: 1,
     padding:20,
@@ -56,19 +56,26 @@ export default function RegisterPage({route, navigation}) {
     if (datas.prenom.length < 2 || datas.nom.length < 2)
       return Alert.alert('Veuillez renseigné des champs plus long');
 
+
+    setIsValid(false)
     apicall('/accounts/setProfil', (resp) => {
+      console.log(resp)
       if (!resp.ok)
       {
         if (resp.NetworkError)
           navigation.navigate('NetworkError', resp.NetworkStatus);
+        setIsValid(true)
         return;
       }
-      if (resp.message.setProfil) 
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'StartScreen' }],
-        });
-      
+      if (!resp.message.setProfil) 
+      {
+        setIsValid(true)
+        return;
+      }
+     
+  
+      navigation.reset({ index: 0, routes: [{ name: 'StartScreen' }] });
+
     }, datas)
       
   }

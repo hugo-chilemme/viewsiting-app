@@ -46,8 +46,6 @@ export default function WelcomePage({navigation}) {
   }
   
 
-  
-
   const handleTelephoneChange = (text) => {
     const isValid = isValidPhoneNumber(text)
     inputTelephoneValue = text.slice(0);
@@ -64,17 +62,19 @@ export default function WelcomePage({navigation}) {
     const datas = {
       telephone: inputTelephoneValue, 
     }
+
+    setIsValid(false)
     apicall('/accounts/user_have_account', (resp) => {
+      console.log(resp);
       if (!resp.ok)
       {
         if (resp.NetworkError)
           navigation.navigate('NetworkError', {NetworkStatus: resp.NetworkStatus});
+        setIsValid(true)
         return;
       }
-
       const authorize_token = resp.message.authorize_token;
       navigation.navigate(resp.message.UserHaveAccount ? "Login" : "Register", {telephone: inputTelephoneValue, authorize_token, accountId: resp.message.accountId})
-
     }, datas)
   }
   
