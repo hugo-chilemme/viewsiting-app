@@ -1,8 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, View, Image } from 'react-native';
-import { Title, Button } from '../../core/styles';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
-
+import { Component } from '../../core/components'
 
 
 
@@ -15,13 +14,17 @@ export default function WelcomePage({navigation}) {
     justifyContent: 'center',
   });
   
-
     return (
       <View style={container}>
-        <Image style={{ marginBottom: 50, width:150, height: 50}} source={require('../../../assets/icon.png')} />
-        <Title size="1" title="L'immobilier dans votre poche" properties={{ marginBottom: 20 }}></Title>
-        <Title size="5" title="Application N°1 dans l’immobilier"></Title>
-        <Button title="Suivant" press="Saisissez votre adresse email" redirect={{...navigation, ...{page: "UserHaveAccount"}}}></Button>
+
+        {   Component.Image(require('../../../assets/icon.png'), { marginBottom: 50, width:150, height:50 })   }
+        
+        {   Component.Title("L'immobilier dans votre poche", 1, { marginBottom: 20 })   }
+
+        {   Component.Title("Application N°1 dans l’immobilier", 5)   }
+
+        {   Component.Button("Suivant", () => navigation.navigate('UserHaveAccount'))   }
+
         <StatusBar style="auto" />
       </View>
     );

@@ -29,18 +29,11 @@ global.Storage = Storage;
 
 import { NavigationContainer, useNavigation  } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { v5 as uuidv5 } from 'uuid';
-import { Platform } from 'react-native';
-
+import './backend/engine/api';
 
 const Stack = createStackNavigator();
 
 
-
-
-const device = Platform.Serial || `${Platform.constants.Manufacturer}-${Platform.constants.Model}`;
-global.deviceId = uuidv5(device, "1b671a64-40d5-491e-99b0-da01ff1f3341");
-global.deviceName = Platform['__constants'].Manufacturer + " " + Platform['__constants'].Model;
 
 function App() {
 
@@ -95,40 +88,5 @@ function App() {
 
 }
 
-
-let requestInProgress = false;
-global.apicall = async (event, cb, message = {}) => {
-  if(requestInProgress) return;
-  let datas = {};
-
-  
-  datas.message = message;
-  datas.authority = {
-    NAME: deviceName,
-    ID: deviceId,
-    ...accounts?.active?.authorization(),
-  }
-  
-  
-  requestInProgress = true;
-  const response = await fetch('https://alice.hugochilemme.com'+event, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(datas),
-  });
-  requestInProgress = false;
-  if (response.ok == false)
-    return cb({ok: false, NetworkError: true, NetworkStatus: response.status});
-
-  await response.json().then(async (resp) => {
-    if (resp.authority && accounts.active)
-      accounts.active.setAuthorization(resp.authority);
-    cb(resp)
-    return resp;
-  })
-  
-}
 global.app = App;
 export default App;
