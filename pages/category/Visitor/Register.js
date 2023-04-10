@@ -71,8 +71,11 @@ export default function RegisterPage({route, navigation}) {
   return (
     <View style={container}>
       <View style={{width: "100%"}}>
-        <Title size="0" title="Création de compte" properties={{ marginBottom: 15 }}></Title>
-        <Title size="3" title={`+33 ${datas.telephone}`}></Title>
+
+        {   Component.Title('Création de compte', 0, { marginBottom: 15 })   }
+
+        {   Component.Title(`+33 ${datas.telephone}`, 3, { marginBottom: 15 })   }
+
 
         <TouchableOpacity style={InputProperties.element}>
           <Text style={InputProperties.label}>Mot de passe (minimum 8 caractères)</Text>
@@ -86,7 +89,7 @@ export default function RegisterPage({route, navigation}) {
 
       </View>
 
-      {   Component.Button("Suivant", handleSubmit, isValid)   }
+      {   Component.Button('Suivant', handleSubmit, isValid)   }
 
       <StatusBar style="auto" />
     </View>

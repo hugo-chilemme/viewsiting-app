@@ -83,6 +83,36 @@ export const TitleProperties = [
 ]
 
 
+export const NavbarProperties = {
+    view: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        height: 65,
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderRadius: 20,
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        shadowColor: '#202020',
+        elevation: 50,
+    },
+    item: {
+        flex: 1,
+        padding:20,
+        width: '33%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    icon: {
+        fontSize: 18,
+        marginTop: 0
+    }
+}
+
 let SelectorProperties = {
     element: {
         marginTop: 25,    
@@ -105,6 +135,8 @@ let SelectorProperties = {
 SelectorProperties.buttonActive = {...SelectorProperties.button, ...{
     borderColor: "#1A58A2",
 }}
+
+
 
 
 exports.SelectorProperties = SelectorProperties;

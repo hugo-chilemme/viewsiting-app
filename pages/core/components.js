@@ -2,8 +2,15 @@
 import { ButtonProperties, TitleProperties } from './properties';
 import { TouchableOpacity, Text, Image } from 'react-native';
 
+import { Module } from './module';
 
 const Component = {
+
+
+    /**
+     * List of extensions
+     */
+    Module: Module,
 
 
     /**
@@ -18,7 +25,7 @@ const Component = {
         
         const handlePress = () => {
 
-            if (enabled && onpress)
+            if ( enabled && onpress )
             {
 
                 onpress();
@@ -26,10 +33,17 @@ const Component = {
             }
 
         }
-        stateupdate = () => 
-            enabled ? 
-            ButtonProperties.buttonText : 
-            ButtonProperties.buttonTextDisabled;
+        const stateupdate = () => {
+
+            if ( enabled )
+            {
+
+                return ( ButtonProperties.buttonText );
+
+            }
+            return ( ButtonProperties.buttonTextDisabled );
+
+        }
 
         return (
             <TouchableOpacity style={ButtonProperties.button} onPress={handlePress}>
@@ -70,14 +84,15 @@ const Component = {
      *      Called with a required => required('icon.png')
      *  @param {object} styles - Additional styling
      */
-    Image: (source, styles) => {
-        const properties = {
-            ...styles
-        }
-        return (<Image style={properties} source={source} />)
-    }
+    Image: (source, styles = {}) => {
 
-    
+        const properties = { ...styles }
+
+        return (<Image style={properties} source={source} />)
+
+    },
+
+
 }
 
 exports.Component = Component;

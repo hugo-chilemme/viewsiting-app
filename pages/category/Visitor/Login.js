@@ -83,8 +83,8 @@ export default function RegisterPage({route, navigation}) {
 
       </View>
 
-      {   Component.Button("Se connecter", handleSubmit, isValid)   }
-      
+      {   Component.Button('Se connecter', handleSubmit, isValid)   }
+
       <StatusBar style="auto" />
     </View>
   );
